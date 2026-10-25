@@ -52,6 +52,13 @@ jobs:
         run: |
           make -C hybridse/tools/documentation/udf_doxygen sync
 
+      - name: Check generated changes
+        if: github.event_name != 'pull_request'
+        run: |
+          git status --short
+          git diff -- .github/workflows/udf-doc.yml
+          git diff --cached -- .github/workflows/udf-doc.yml
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         if: github.event_name != 'pull_request'
